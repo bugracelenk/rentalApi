@@ -1,0 +1,20 @@
+{
+  "name": "rental-api",
+  "version": "1.0.0",
+  "description": "A Rent api for exercise",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "Altuğ Buğra Çelenk",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "joi": "^14.3.0",
+    "mongoose": "^5.3.14"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.7"
+  }
+}
