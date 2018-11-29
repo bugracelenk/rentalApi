@@ -1,11 +1,9 @@
 const mongoose = require('mongoose');
-const express = require('express');
-const router = express.Router();
 
 const Movie = require('../models/movie');
 const { Genre } = require('../models/genre');
 
-router.get('/', (req, res, next) => {
+exports.movies_get_all = (req, res, next) => {
   Movie.find()
     .select('title genre numberInStock dailyRentalRate')
     .sort('title')
@@ -21,9 +19,9 @@ router.get('/', (req, res, next) => {
         error: err
       });
     });
-});
+};
 
-router.post('/', (req, res, next) => {
+exports.movies_post = (req, res, next) => {
   Genre.findById(req.body.genreId)
     .exec()
     .then(genre => {
@@ -53,9 +51,9 @@ router.post('/', (req, res, next) => {
         error: err
       });
     });
-});
+};
 
-router.delete('/:id', (req, res, next) => {
+exports.movies_delete = (req, res, next) => {
   Movie.remove({ _id: req.params.id })
     .exec()
     .then(result => {
@@ -69,9 +67,9 @@ router.delete('/:id', (req, res, next) => {
         error: err
       });
     });
-});
+};
 
-router.get('/:id', (req, res, next) => {
+exports.movies_get_by_id = (req, res, next) => {
   Movie.findById(req.params.id)
     .select('title genre dailyRentalRate numberInStock')
     .exec()
@@ -84,6 +82,4 @@ router.get('/:id', (req, res, next) => {
         error: err
       });
     });
-});
-
-module.exports = router;
+}

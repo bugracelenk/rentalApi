@@ -10,9 +10,13 @@
   "author": "Altuğ Buğra Çelenk",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.2",
     "express": "^4.16.4",
     "joi": "^14.3.0",
-    "mongoose": "^5.3.14"
+    "jsonwebtoken": "^8.4.0",
+    "mongoose": "^5.3.14",
+    "node-pre-gyp": "^0.12.0",
+    "nodebase": "^1.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.7"

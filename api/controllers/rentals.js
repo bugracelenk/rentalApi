@@ -2,10 +2,8 @@ const Rental = require('../models/rental');
 const Movie = require('../models/movie');
 const { Customer } = require('../models/customer');
 const mongoose = require('mongoose');
-const express = require('express');
-const router = express.Router();
 
-router.get('/', (req, res, next) => {
+exports.rentals_get_all = (req, res, next) => {
   Rental.find()
     .select('customer movie rentalFee dateOut dateReturned')
     .populate('customer', "isGold phone name _id")
@@ -20,9 +18,9 @@ router.get('/', (req, res, next) => {
         error: err
       });
     });
-});
+};
 
-router.post('/', (req, res, next) => {
+exports.rentals_post = (req, res, next) => {
   Customer.findById(req.body.customerId)
     .then(customer => {
       if (!customer) {
@@ -65,24 +63,9 @@ router.post('/', (req, res, next) => {
         error: err
       });
     });
-})
+};
 
-router.delete('/:id', (req, res, next) => {
-  Rental.findByIdAndRemove(req.params.id)
-  .then(result => {
-    res.status(200).json({
-      message: 'Rental has been deleted with the given ID'
-    });
-  })
-  .catch(err => {
-    console.log(err);
-    res.status(500).json({
-      error: err
-    });
-  });
-})
-
-router.get('/:id', (req, res, next) => {
+exports.rentals_get_by_id = (req, res, next) => {
   Rental.findById(req.params.id)
     .select('customer movie rentalFee dateOut dateReturned')
     .populate('customer', "isGold phone name _id")
@@ -97,6 +80,19 @@ router.get('/:id', (req, res, next) => {
         error: err
       });
     });
-})
+};
 
-module.exports = router;
+exports.rentals_delete = (req, res, next) => {
+  Rental.findByIdAndRemove(req.params.id)
+    .then(result => {
+      res.status(200).json({
+        message: 'Rental has been deleted with the given ID'
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};

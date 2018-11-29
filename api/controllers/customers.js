@@ -1,17 +1,24 @@
 const { Customer, validate } = require('../models/customer');
 const mongoose = require('mongoose');
-const express = require('express');
-const router = express.Router();
 
-router.get('/', async (req, res) => {
-  const customers = await Customer.find().sort('name');
-  res.status(200).send(customers);
-});
+exports.customers_get_all = (req, res, next) => {
+  Customer.find()
+    .select("name phone isGold")
+    .sort("name")
+    .then(result => {
+      res.status(200).json({
+        customers: result
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      })
+    })
+};
 
-router.post('/', async (req, res) => {
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
+exports.customers_post = (req, res, next) => {
   const customer = new Customer({
     name: req.body.name,
     isGold: req.body.isGold,
@@ -30,11 +37,9 @@ router.post('/', async (req, res) => {
         error: err
       });
     });
-});
+};
 
-router.patch('/:id', async (req, res) => {
-  // const { error } = validate(req.body);
-  // if (error) return res.status(400).send(error.details[0].message);
+exports.customers_update = (req, res, next) => {
   const id = req.params.id;
   const updateOps = {};
   for (const ops of req.body) {
@@ -54,9 +59,9 @@ router.patch('/:id', async (req, res) => {
         error: err
       });
     });
-});
+}
 
-router.delete('/:id', async (req, res) => {
+exports.customers_delete = (res, req, next) => {
   const id = req.params.id;
   Customer.remove({ _id: id })
     .exec()
@@ -71,10 +76,9 @@ router.delete('/:id', async (req, res) => {
         error: err
       });
     });
-})
+}
 
-
-router.get('/:id', async (req, res) => {
+exports.customers_get_by_id = (req, res, next) => {
   Customer.findById(req.params.id)
     .select('name phone isGold')
     .exec()
@@ -89,6 +93,4 @@ router.get('/:id', async (req, res) => {
         error: err
       });
     });
-});
-
-module.exports = router;
+}
